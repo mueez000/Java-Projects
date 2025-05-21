@@ -1,0 +1,69 @@
+---------------------------------------------------
+Database Queries for BANK MANAGEMENT SYSTEM Project
+---------------------------------------------------
+
+create database bankmanagementsystem;
+
+use bankmanagementsystem;
+
+CREATE TABLE SignupOne (
+    form_no VARCHAR(20) PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    guardian_name VARCHAR(100) NOT NULL,
+    dob DATE NOT NULL,
+    gender ENUM('Male', 'Female', 'Other') NOT NULL,
+    cnic VARCHAR(15) UNIQUE NOT NULL,
+    marital_status ENUM('Married', 'Single', 'Other') NOT NULL,
+    address TEXT NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    postal_code VARCHAR(10) NOT NULL,
+    province VARCHAR(50) NOT NULL
+);
+DELETE FROM SignupOne WHERE cnic = '35403-9040903-3';
+DELETE FROM SignupTwo WHERE form_no = 'BKI-1234';
+DELETE FROM SignupThree WHERE card_number = '4123456789012345';
+DELETE FROM Login WHERE form_no = 'BKI-1234';
+SELECT * FROM SignupOne;
+SELECT * FROM SignupTwo;
+SELECT * FROM SignupThree;
+SELECT * FROM Login;
+
+CREATE TABLE SignupTwo (
+    form_no VARCHAR(20) PRIMARY KEY,
+    religion ENUM('Muslim', 'Christian', 'Hindu', 'Other') NOT NULL,
+    account_type ENUM('Islamic Current', 'Islamic Savings', 'Al-Amanah', 'Business', 'Student') NOT NULL,
+    annual_income VARCHAR(50) NOT NULL,
+    education ENUM('Matriculate', 'Intermediate', 'Bachelor''s', 'Master''s', 'PhD', 'Madrasa', 'Other') NOT NULL,
+    occupation ENUM('Salaried', 'Self-Employed', 'Business', 'Student', 'Retired', 'Agriculture', 'Other') NOT NULL,
+    tax_number VARCHAR(20),
+    senior_citizen ENUM('Yes', 'No') NOT NULL,
+    existing_bank_account ENUM('Yes', 'No') NOT NULL,
+    FOREIGN KEY (form_no) REFERENCES SignupOne(form_no) ON DELETE CASCADE
+);
+
+CREATE TABLE SignupThree (
+    form_no VARCHAR(20) PRIMARY KEY,
+    account_type ENUM('Islamic Savings', 'Al-Amanah', 'Current', 'Term Deposit') NOT NULL,
+    card_number VARCHAR(16) UNIQUE NOT NULL,
+    mpin VARCHAR(4) NOT NULL,
+    facilities TEXT NOT NULL,
+    FOREIGN KEY (form_no) REFERENCES SignupOne(form_no) ON DELETE CASCADE
+);
+
+CREATE TABLE Login (
+    form_no VARCHAR(20) PRIMARY KEY,
+    card_number VARCHAR(16) UNIQUE NOT NULL,
+    mpin VARCHAR(4) NOT NULL,
+    FOREIGN KEY (form_no) REFERENCES SignupThree(form_no) ON DELETE CASCADE
+);
+
+CREATE TABLE bank_transactions (
+    mpin varchar(100) NOT NULL,                          -- ✅ MPIN stored as Integer
+    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  
+    transaction_type ENUM('DEPOSIT', 'WITHDRAWAL') NOT NULL, 
+    amount DECIMAL(15,2) 
+);
+
+drop table bank_transactions
+
+SELECT * FROM SignupThree;
